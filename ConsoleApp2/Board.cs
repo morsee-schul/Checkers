@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net.Mail;
 
 namespace ConsoleApp2
 {
@@ -114,7 +112,7 @@ namespace ConsoleApp2
                                         break;
                                     default:
                                     {
-                                        // Check if selected piece has any moves avalable
+                                        // Check if selected piece has any moves available
                                         var moves = this[piecePos].FindAllMoves();
                                         if (moves.NextMoves.Count == 0)
                                             Helpers.Error("This piece has no valid moves available");
@@ -155,12 +153,12 @@ namespace ConsoleApp2
                     {
                         if (forceJumps && move.HasObligatory)
                             Helpers.ColoredWriteLine(
-                                $"You have to jump over one of these pieces: [{String.Join(", ", move.AllToKillCandidates)}]");
+                                $"You have to jump over one of these pieces: {String.Join(", ", move.AllToKillCandidates)}");
 
                         string resp =
                             Helpers.Input(
                                 $@"Where to move {firstMove.Piece} piece{
-                                    (!forceJumps && !isFirstMove ? " (leave empty for no more moves)" : "")}: ");
+                                    (!forceJumps && !isFirstMove ? " (leave empty for end of move)" : "")}: ");
 
                         // Stop this move if player is not forced to play and this is not first move
                         if (!forceJumps && !isFirstMove && resp.Length == 0)
@@ -239,7 +237,7 @@ namespace ConsoleApp2
             {
                 Pieces.Remove(kill);
                 this[kill.Pos.X, kill.Pos.Y] = null;
-                
+
                 if (kill.White)
                     DarkKills.Add(kill);
                 else
@@ -330,16 +328,16 @@ namespace ConsoleApp2
             Console.Write("     " + (Selected.x != null
                 ? " ".Mult((int)Selected.x * 2) + (reverse ? "↑" : "↓") + " ".Mult((7 - (int)Selected.x) * 2)
                 : " ".Mult(2 * 8)));
-            
+
             // Print ῲ if this player plays
             Helpers.ColoredWrite(!(WhitePlaying ^ reverse) ? "   ῲ" : "    ", null,
-                WhitePlaying ? Program.LightTeamColor : Program.DarkTeamColor);
-            
+                WhitePlaying ? Launcher.CurrentGameOptions.LightTeamColor : Launcher.CurrentGameOptions.DarkTeamColor);
+
             // Print taken pieces
             Helpers.ColoredWriteLine("    " + (reverse
                     ? String.Join("", WhiteKills.Select(p => p.Mark))
                     : String.Join("", DarkKills.Select(p => p.Mark))), null,
-                reverse ? Program.LightTeamColor : Program.DarkTeamColor);
+                reverse ? Launcher.CurrentGameOptions.LightTeamColor : Launcher.CurrentGameOptions.DarkTeamColor);
         }
 
         private void PrintColNames()
@@ -377,9 +375,10 @@ namespace ConsoleApp2
         private void PrintPlayingPlayer()
         {
             Helpers.ColoredWrite(WhitePlaying
-                    ? $"Player {Enum.GetName(typeof(ConsoleColor), Program.LightTeamColor)} is playing"
-                    : $"Player {Enum.GetName(typeof(ConsoleColor), Program.DarkTeamColor)} is playing", null,
-                WhitePlaying ? Program.LightTeamColor : Program.DarkTeamColor);
+                    ? $"Player {Enum.GetName(typeof(ConsoleColor), Launcher.CurrentGameOptions.LightTeamColor)} is playing"
+                    : $"Player {Enum.GetName(typeof(ConsoleColor), Launcher.CurrentGameOptions.DarkTeamColor)} is playing",
+                null,
+                WhitePlaying ? Launcher.CurrentGameOptions.LightTeamColor : Launcher.CurrentGameOptions.DarkTeamColor);
             Console.WriteLine();
         }
 

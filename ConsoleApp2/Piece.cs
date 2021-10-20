@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 
 namespace ConsoleApp2
@@ -51,7 +50,10 @@ namespace ConsoleApp2
         }
 
         public abstract char Mark { get; }
-        public ConsoleColor MarkColor => White ? Program.LightTeamColor : Program.DarkTeamColor;
+
+        public ConsoleColor MarkColor =>
+            White ? Launcher.CurrentGameOptions.LightTeamColor : Launcher.CurrentGameOptions.DarkTeamColor;
+
         public abstract MoveTree FindAllMoves(List<Piece> pieces = null);
 
         public static Piece PieceOnSpot(PiecePos pos, List<Piece> pieces)

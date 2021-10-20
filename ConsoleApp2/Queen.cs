@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace ConsoleApp2
@@ -96,6 +95,8 @@ namespace ConsoleApp2
             }
         }
 
-        public override char Mark => Program.ReverseRoles ? Program.KnightMark : Program.QueenMark;
+        public override char Mark => Launcher.CurrentGameOptions.ReverseRoles
+            ? Launcher.CurrentGameOptions.KnightMark
+            : Launcher.CurrentGameOptions.QueenMark;
     }
 }
